@@ -1,5 +1,13 @@
 def menus():
-    menu = ["Nmap", "Aircrack-ng", "Hydra", "JohnTheRipper", "Medusa", "BruteSuite", "Gobuster", "Nikto", "Sqlmap"]
+    menu = ["Nmap",
+             "Aircrack-ng", 
+             "Hydra",
+             "JohnTheRipper",
+             "Medusa", 
+             "BruteSuite", 
+             "Gobuster", 
+             "Nikto", 
+             "Sqlmap"]
     colomn = 3
     line = (len(menu) + colomn - 1) // colomn
 

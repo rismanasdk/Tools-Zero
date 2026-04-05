@@ -90,6 +90,15 @@ NMAP_CATEGORIES = {
             ("Update the script database", "nmap --script-updatedb"),
         ],
     },
+    "7": {
+        "title": "Combined Commands",
+        "commands": [
+            ("Performs stealth scans (SYN), detects operating systems, and displays more detailed (verbose) output for in-depth network audits.", "nmap -sS -O -v [target]"),
+            ("Perform a UDP scan with OS detection", "nmap -sU -O [target]"),
+            ("Perform a comprehensive scan", "nmap -sS -sU -A -T4 [target]"),
+            ("Using the Nmap Scripting Engine (NSE) to detect specific vulnerabilities in detected services.", "nmap --script=vuln [target]"),
+        ],
+    }
 }
 
 
@@ -103,7 +112,7 @@ def build_command(template):
     for placeholder in extract_placeholders(template):
         value = input(f"Input {placeholder}> ").strip()
         if not value:
-            print(f"{placeholder} tidak boleh kosong.")
+            print(f"{placeholder} cannot be empty.")
             return None
         command = command.replace(f"[{placeholder}]", value, 1)
 
@@ -113,8 +122,8 @@ def build_command(template):
 def run_command(command):
     binary_path = shutil.which(command[0])
     if not binary_path:
-        print(f"\nCommand '{command[0]}' tidak ditemukan di sistem.")
-        print("Install tool aslinya dulu, lalu coba lagi.")
+        print(f"\nCommand '{command[0]}' not found in the system.")
+        print("Please install the tool first, then try again.")
         return
 
     command[0] = binary_path
@@ -146,21 +155,21 @@ def show_category_commands(category):
 def handle_category(choice):
     category = NMAP_CATEGORIES.get(choice)
     if not category:
-        print("Pilihan kategori belum tersedia.")
+        print("Category selection is not yet available.")
         return
 
     show_category_commands(category)
     final = input("\nSelect-Options>Nmap>Commands>").strip()
 
     if not final.isdigit():
-        print("Input command harus berupa angka.")
+        print("Input command must be a number.")
         return
 
     index = int(final) - 1
     commands = category["commands"]
 
     if index < 0 or index >= len(commands):
-        print("Pilihan command tidak tersedia.")
+        print("Selected command is not available.")
         return
 
     _, template = commands[index]
