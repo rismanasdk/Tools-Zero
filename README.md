@@ -5,15 +5,15 @@ Tools Zero is a collection of simple Python wrappers and a CLI/menu interface fo
 ## Overview
 
 This project provides helper scripts to simplify running several popular tools:
--Nmap
--Aircrack-ng
--Hydra
--JohnTheRipper
--Medusa
--BruteSuite
--Gobuster
--Nikto
--Sqlmap
+- Nmap
+- Aircrack-ng
+- Hydra
+- JohnTheRipper
+- Medusa
+- BruteSuite
+- Gobuster
+- Nikto
+- Sqlmap
 
 via a unified menu and small wrapper scripts. The goal is to centralize utilities, short documentation, and install scripts in a single repository for local use on Linux systems.
 

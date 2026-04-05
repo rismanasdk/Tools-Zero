@@ -210,18 +210,25 @@ EOF
 }
 
 main() {
-  main_menu
-  read -r -p $'\nSelect-Options>Nikto>' select
+  while true; do
+    main_menu
+    echo "b. Back to main menu"
+    echo "q. Quit"
+    read -r -p $'\nSelect-Options>Nikto>' select
 
-  case "$select" in
-    1) basic_scan ;;
-    2) output_menu ;;
-    3) tuning_menu ;;
-    4) advanced_menu ;;
-    *)
-      echo "Pilihan belum tersedia."
-      ;;
-  esac
+    case "$select" in
+      1) basic_scan ;;
+      2) output_menu ;;
+      3) tuning_menu ;;
+      4) advanced_menu ;;
+      b|B) return 0 ;;
+      q|Q) exit 0 ;;
+      *)
+        echo "Pilihan belum tersedia."
+        ;;
+    esac
+    echo
+  done
 }
 
 main

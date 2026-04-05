@@ -1,20 +1,21 @@
 from banner import banner
 from menu import menus
-import importlib.util
 from pathlib import Path
 import subprocess
-
-from toolkit.nmap.main_nmap import main_nmap
+from runtime_utils import load_module
 
 
 BASE_DIR = Path(__file__).resolve().parent
 
 
+def run_nmap_main():
+    script = BASE_DIR / "toolkit" / "nmap" / "main_nmap.sh"
+    subprocess.run(["bash", str(script)], check=False)
+
+
 def load_aircrack_main():
     module_path = BASE_DIR / "toolkit" / "aircrack-ng" / "main_aircrack_ng.py"
-    spec = importlib.util.spec_from_file_location("aircrack_main", module_path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    module = load_module(module_path, "aircrack_main")
     return module.main_aircrack_ng
 
 
@@ -49,27 +50,37 @@ def run_sqlmap_main():
 
 
 def main():
-    print(banner)
-    menus()
+    actions = {
+        "1": run_nmap_main,
+        "2": lambda: load_aircrack_main()(),
+        "3": run_hydra_main,
+        "4": run_john_main,
+        "5": run_medusa_main,
+        "6": run_gobuster_main,
+        "7": run_nikto_main,
+        "8": run_sqlmap_main,
+        "9": lambda: None,
+        "q": lambda: None,
+        "quit": lambda: None,
+        "exit": lambda: None,
+    }
 
     while True:
+        print(banner)
+        menus()
+        try:
+            select = input("\nSelect-Options>").strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            print("\nExiting Tools Zero.")
+            return
 
-        select = input("\nSelect-Options>")
+        if select in {"9", "q", "quit", "exit"}:
+            print("Exiting Tools Zero.")
+            return
 
-        if select == "1":
-            main_nmap()
-        elif select == "2":
-            main_aircrack_ng = load_aircrack_main()
-            main_aircrack_ng()
-        elif select == "3":
-            run_hydra_main()
-        elif select == "4":
-            run_john_main()
-        elif select == "5":
-            run_medusa_main()
-        elif select == "7":
-            run_gobuster_main()
-        elif select == "8":
-            run_nikto_main()
-        elif select == "9":
-            run_sqlmap_main()
+        action = actions.get(select)
+        if action is None:
+            print("Selected option is not available.")
+            continue
+
+        action()
