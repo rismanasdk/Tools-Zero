@@ -3,7 +3,6 @@ from runtime_utils import load_module
 
 BASE_DIR = Path(__file__).resolve().parent
 
-
 def main_aircrack_ng():
     while True:
         help_module = load_module(BASE_DIR / "help_commands.py", "aircrack_help")
