@@ -317,18 +317,25 @@ EOF
 }
 
 main() {
-  show_menu
-  read -r -p $'\nSelect-Options>Nmap>' select
-  case "$select" in
-    1) basic_scanning ;;
-    2) discovery_options ;;
-    3) firewall_evasion ;;
-    4) version_detection ;;
-    5) output_options ;;
-    6) scripting_engine ;;
-    7) combined_commands ;;
-    *) echo "Category selection is not yet available." ;;
-  esac
+  while true; do
+    show_menu
+    echo "b. Back to main menu"
+    echo "q. Quit"
+    read -r -p $'\nSelect-Options>Nmap>' select
+    case "$select" in
+      1) basic_scanning ;;
+      2) discovery_options ;;
+      3) firewall_evasion ;;
+      4) version_detection ;;
+      5) output_options ;;
+      6) scripting_engine ;;
+      7) combined_commands ;;
+      b|B) return 0 ;;
+      q|Q) exit 0 ;;
+      *) echo "Category selection is not yet available." ;;
+    esac
+    echo
+  done
 }
 
 main

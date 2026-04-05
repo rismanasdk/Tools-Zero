@@ -2,6 +2,7 @@ import re
 import shlex
 import shutil
 import subprocess
+from runtime_utils import execute_logged_command
 
 
 AIRGRAPH_COMMANDS = [
@@ -31,22 +32,12 @@ def build_command(template):
 
 
 def run_command(command):
-    binary_path = shutil.which(command[0])
-    if not binary_path:
-        print(f"\nCommand '{command[0]}' cannot be found in the system.")
-        print("Please install the original tool first, then try again.")
-        return
-
-    command[0] = binary_path
-    print("\nAirgraph-ng Command")
-    print(" ".join(command))
-    print()
-
-    result = subprocess.run(command, text=True, capture_output=True)
-    if result.stdout:
-        print(result.stdout)
-    if result.stderr:
-        print(result.stderr)
+    execute_logged_command(
+        command,
+        tool_name="Airgraph-ng",
+        header="Airgraph-ng",
+        missing_tool_message="Please install the original tool first, then try again.",
+    )
 
 
 def main_airgraph_ng():

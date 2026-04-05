@@ -2,6 +2,7 @@ import re
 import shlex
 import shutil
 import subprocess
+from runtime_utils import execute_logged_command
 
 
 AIRSERV_COMMANDS = [
@@ -29,20 +30,7 @@ def build_command(template):
 
 
 def run_command(command):
-    binary_path = shutil.which(command[0])
-    if not binary_path:
-        print(f"\nCommand '{command[0]}' not found in the system.")
-        print("Please install the tool first, then try again.")
-        return
-    command[0] = binary_path
-    print("\nAirserv-ng Command")
-    print(" ".join(command))
-    print()
-    result = subprocess.run(command, text=True, capture_output=True)
-    if result.stdout:
-        print(result.stdout)
-    if result.stderr:
-        print(result.stderr)
+    execute_logged_command(command, tool_name="Airserv-ng", header="Airserv-ng")
 
 
 def main_airserv_ng():

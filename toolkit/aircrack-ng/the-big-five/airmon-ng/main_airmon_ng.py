@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+from runtime_utils import execute_logged_command
 
 
 def show_help():
@@ -18,28 +19,13 @@ def show_help():
 
 
 def run_command(command):
-    binary_path = shutil.which(command[0])
-    if not binary_path:
-        print(f"\nCommand '{command[0]}' cannot be found in the system.")
-        print("Please install the original tool first, then try again.")
-        return
-
-    command[0] = binary_path
-
-    print("\nAirmon-ng Command")
-    print(" ".join(command))
-    print()
-
-    if os.geteuid() != 0:
-        print("Airmon-ng usually needs to be run as root or via sudo.")
-
-    result = subprocess.run(command, text=True, capture_output=True)
-
-    if result.stdout:
-        print(result.stdout)
-
-    if result.stderr:
-        print(result.stderr)
+    execute_logged_command(
+        command,
+        tool_name="Airmon-ng",
+        header="Airmon-ng",
+        warn_if_not_root=True,
+        missing_tool_message="Please install the original tool first, then try again.",
+    )
 
 
 def main_airmon_ng():
