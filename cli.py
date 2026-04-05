@@ -3,49 +3,39 @@ from menu import menus
 from pathlib import Path
 import subprocess
 
-
 BASE_DIR = Path(__file__).resolve().parent
-
 
 def run_nmap_main():
     script = BASE_DIR / "toolkit" / "nmap" / "main_nmap.sh"
     subprocess.run(["bash", str(script)], check=False)
 
-
 def run_aircrack_main():
     script = BASE_DIR / "toolkit" / "aircrack-ng" / "main_aircrack_ng.sh"
     subprocess.run(["bash", str(script)], check=False)
 
-
 def run_hydra_main():
     script = BASE_DIR / "toolkit" / "hydra" / "main_hydra.sh"
     subprocess.run(["bash", str(script)], check=False)
-
-
+    
 def run_john_main():
     script = BASE_DIR / "toolkit" / "johntheripper" / "main_john.sh"
     subprocess.run(["bash", str(script)], check=False)
-
 
 def run_medusa_main():
     script = BASE_DIR / "toolkit" / "medusa" / "main_medusa.sh"
     subprocess.run(["bash", str(script)], check=False)
 
-
 def run_gobuster_main():
     script = BASE_DIR / "toolkit" / "gobuster" / "main_gobuster.sh"
     subprocess.run(["bash", str(script)], check=False)
-
 
 def run_nikto_main():
     script = BASE_DIR / "toolkit" / "nikto" / "main_nikto.sh"
     subprocess.run(["bash", str(script)], check=False)
 
-
 def run_sqlmap_main():
     script = BASE_DIR / "toolkit" / "sqlmap" / "main_sqlmap.sh"
     subprocess.run(["bash", str(script)], check=False)
-
 
 def main():
     actions = {
