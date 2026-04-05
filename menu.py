@@ -1,15 +1,13 @@
 def menus():
-    menu = [
-        "Nmap",
-        "Aircrack-ng",
-        "Hydra",
-        "JohnTheRipper",
-        "Medusa",
-        "Gobuster",
-        "Nikto",
-        "Sqlmap",
-        "Exit",
-    ]
+    menu = ["Nmap",
+             "Aircrack-ng", 
+             "Hydra",
+             "JohnTheRipper",
+             "Medusa", 
+             "BruteSuite", 
+             "Gobuster", 
+             "Nikto", 
+             "Sqlmap"]
     colomn = 3
     line = (len(menu) + colomn - 1) // colomn
 
@@ -30,5 +28,3 @@ def menus():
         for j in range(colomn):
             line_teks += f"{per_colomn[j][i]:<{width_colomn[j]+2}}"
         print(line_teks)
-
-    print("\nUse a number, or type q to quit.")

@@ -2,7 +2,6 @@ import re
 import shlex
 import shutil
 import subprocess
-from runtime_utils import execute_logged_command
 
 
 AIRTUN_CATEGORIES = {
@@ -65,7 +64,20 @@ def build_command(template):
 
 
 def run_command(command):
-    execute_logged_command(command, tool_name="Airtun-ng", header="Airtun-ng")
+    binary_path = shutil.which(command[0])
+    if not binary_path:
+        print(f"\nCommand '{command[0]}' not found in the system.")
+        print("Please install the tool first, then try again.")
+        return
+    command[0] = binary_path
+    print("\nAirtun-ng Command")
+    print(" ".join(command))
+    print()
+    result = subprocess.run(command, text=True, capture_output=True)
+    if result.stdout:
+        print(result.stdout)
+    if result.stderr:
+        print(result.stderr)
 
 
 def show_category_commands(category):

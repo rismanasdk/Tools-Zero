@@ -2,7 +2,6 @@ import re
 import shlex
 import shutil
 import subprocess
-from runtime_utils import execute_logged_command
 
 
 AIROLIB_COMMANDS = [
@@ -36,12 +35,22 @@ def build_command(template):
 
 
 def run_command(command):
-    execute_logged_command(
-        command,
-        tool_name="Airolib-ng",
-        header="Airolib-ng",
-        missing_tool_message="Please install the original tool first, then try again.",
-    )
+    binary_path = shutil.which(command[0])
+    if not binary_path:
+        print(f"\nCommand '{command[0]}' cannot be found in the system.")
+        print("Please install the original tool first, then try again.")
+        return
+
+    command[0] = binary_path
+    print("\nAirolib-ng Command")
+    print(" ".join(command))
+    print()
+
+    result = subprocess.run(command, text=True, capture_output=True)
+    if result.stdout:
+        print(result.stdout)
+    if result.stderr:
+        print(result.stderr)
 
 
 def main_airolib_ng():
