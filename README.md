@@ -69,7 +69,7 @@ After starting the program, use the menu to choose a tool to run, or execute ind
 
 ## Status Project
 
-The current project status is under development, but for now you can use nmap and aircrack-ng.
+The current project status is under development.
 
 ## Notes
 
