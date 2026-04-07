@@ -59,7 +59,7 @@ tools_zero_run_command() {
   local tool_name="$1"
   local binary="$2"
   shift 2
-
+  
   local tool_slug
   local timestamp
   local log_file
@@ -67,7 +67,6 @@ tools_zero_run_command() {
   local status
 
   tools_zero_require_command "${binary}" || return 1
-
   tool_slug="$(tools_zero_slug "${tool_name}")"
   tools_zero_ensure_log_dir "${tool_slug}"
   timestamp="$(tools_zero_timestamp)"

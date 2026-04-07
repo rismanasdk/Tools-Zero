@@ -75,7 +75,7 @@ Below is a screenshot of the current interface:
 
 ## Status Project
 
-The current project status is under development, but for now you can use nmap and aircrack-ng.
+The current project status is under development.
 
 ## Notes
 
