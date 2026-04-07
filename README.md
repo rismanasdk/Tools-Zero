@@ -62,6 +62,12 @@ python3 cli.py
 
 After starting the program, use the menu to choose a tool to run, or execute individual helper scripts inside `toolkit/` directly (for example: `toolkit/nmap/main_nmap.py`). Check each tool's `help_commands.py` in its subfolder for specific usage instructions.
 
+## Preview
+
+Below is a screenshot of the current interface:
+
+![Tools Zero Preview](screenshot/ss.png)
+
 ## Contributing
 
 - Open an issue to report bugs or propose improvements.
