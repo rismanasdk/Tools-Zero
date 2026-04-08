@@ -304,6 +304,12 @@ nmap -sU -O [target]
 nmap -sS -sU -A -T4 [target]
 4. NSE vuln scan
 nmap --script=vuln [target]
+5. Service & Version Detection
+nmap -sV --version-intensity 5 [target]
+6.Scanning all range port
+nmap -p 1-65535 [target]
+7.Bypass Firewall
+nmap -f -t 0 [target]
 EOF
 
   read -r -p $'\nSelect-Options>Nmap>Commands>' select
