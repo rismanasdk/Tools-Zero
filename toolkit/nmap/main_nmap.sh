@@ -318,6 +318,9 @@ EOF
     2) read -r -p "Input target> " target; run_nmap nmap -sU -O "$target" ;;
     3) read -r -p "Input target> " target; run_nmap nmap -sS -sU -A -T4 "$target" ;;
     4) read -r -p "Input target> " target; run_nmap nmap --script=vuln "$target" ;;
+    5) read -r -p "Input target> " target; run_nmap nmap -sV --version-intensity 5 "$target" ;;
+    6) read -r -p "Input target> " target; run_nmap nmap -p 1-65535 "$target" ;;
+    7) read -r -p "Input target> " target; run_nmap nmap -f -t 0 "$target" ;;
     *) echo "Pilihan command belum tersedia." ;;
   esac
 }
