@@ -12,7 +12,7 @@ def menus():
         "Exit",
     ]
     colomn = 3
-    line = (len(menu) + colomn - 1) // colomn
+    line = (len(menu) + colomn - 2) // colomn
 
     per_colomn = []
     for i in range(colomn):

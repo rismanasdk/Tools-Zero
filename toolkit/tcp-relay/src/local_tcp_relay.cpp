@@ -1,5 +1,6 @@
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <signal.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
@@ -21,6 +22,21 @@ struct Config {
   int target_port = 0;
   std::size_t buffer_size = 4096;
 };
+
+constexpr std::size_t kMaxBufferSize = 1U << 20;
+
+std::atomic<bool> g_stop_requested{false};
+std::atomic<int> g_listener_fd{-1};
+
+void handle_signal(int) {
+  g_stop_requested.store(true);
+
+  const int listener_fd = g_listener_fd.exchange(-1);
+  if (listener_fd >= 0) {
+    shutdown(listener_fd, SHUT_RDWR);
+    close(listener_fd);
+  }
+}
 
 void print_help(const char* program_name) {
   std::cout
@@ -44,6 +60,12 @@ bool is_loopback_host(const std::string& host) {
   return host == "127.0.0.1" || host == "localhost" || host == "::1";
 }
 
+bool targets_same_loopback_endpoint(const Config& config) {
+  return is_loopback_host(config.listen_host) &&
+         is_loopback_host(config.target_host) &&
+         config.listen_port == config.target_port;
+}
+
 int parse_port(const std::string& value, const char* flag_name) {
   try {
     const int port = std::stoi(value);
@@ -59,12 +81,14 @@ int parse_port(const std::string& value, const char* flag_name) {
 std::size_t parse_buffer_size(const std::string& value) {
   try {
     const unsigned long size = std::stoul(value);
-    if (size == 0) {
+    if (size == 0 || size > kMaxBufferSize) {
       throw std::out_of_range("buffer-size");
     }
     return static_cast<std::size_t>(size);
   } catch (const std::exception&) {
-    throw std::runtime_error("Invalid value for --buffer-size: " + value);
+    throw std::runtime_error(
+        "Invalid value for --buffer-size: " + value +
+        " (expected 1-" + std::to_string(kMaxBufferSize) + ")");
   }
 }
 
@@ -121,6 +145,10 @@ Config parse_args(int argc, char* argv[]) {
   if (config.target_port == 0) {
     throw std::runtime_error("Missing required argument: --target-port");
   }
+  if (targets_same_loopback_endpoint(config)) {
+    throw std::runtime_error(
+        "Listen and target endpoints cannot be the same loopback address/port.");
+  }
 
   return config;
 }
@@ -147,6 +175,7 @@ int create_listener(const std::string& host, int port) {
 
     int enabled = 1;
     setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &enabled, sizeof(enabled));
+    setsockopt(listener, SOL_SOCKET, SO_KEEPALIVE, &enabled, sizeof(enabled));
 
     if (bind(listener, entry->ai_addr, entry->ai_addrlen) == 0 &&
         listen(listener, 8) == 0) {
@@ -184,6 +213,8 @@ int connect_target(const std::string& host, int port) {
     if (target < 0) {
       continue;
     }
+    int enabled = 1;
+    setsockopt(target, SOL_SOCKET, SO_KEEPALIVE, &enabled, sizeof(enabled));
     if (connect(target, entry->ai_addr, entry->ai_addrlen) == 0) {
       break;
     }
@@ -240,7 +271,7 @@ void forward_stream(
           destination_fd,
           buffer.data() + total_sent,
           static_cast<std::size_t>(bytes_read - total_sent),
-          0);
+          MSG_NOSIGNAL);
       if (bytes_sent < 0) {
         if (errno == EINTR) {
           continue;
@@ -261,14 +292,19 @@ void forward_stream(
 
 int main(int argc, char* argv[]) {
   try {
+    signal(SIGINT, handle_signal);
+    signal(SIGTERM, handle_signal);
+    signal(SIGPIPE, SIG_IGN);
+
     const Config config = parse_args(argc, argv);
     const int listener = create_listener(config.listen_host, config.listen_port);
+    g_listener_fd.store(listener);
 
     std::cout << "Listening on " << config.listen_host << ":" << config.listen_port
               << " and forwarding to " << config.target_host << ":" << config.target_port
               << std::endl;
 
-    while (true) {
+    while (!g_stop_requested.load()) {
       sockaddr_storage client_addr{};
       socklen_t client_len = sizeof(client_addr);
       const int client_fd =
@@ -277,6 +313,9 @@ int main(int argc, char* argv[]) {
       if (client_fd < 0) {
         if (errno == EINTR) {
           continue;
+        }
+        if (g_stop_requested.load()) {
+          break;
         }
         throw std::runtime_error("accept failed: " + std::string(std::strerror(errno)));
       }
@@ -317,6 +356,9 @@ int main(int argc, char* argv[]) {
       close_socket(target_fd);
       std::cout << "Connection closed" << std::endl;
     }
+
+    close_socket(g_listener_fd.exchange(-1));
+    return 0;
   } catch (const std::exception& error) {
     std::cerr << "Error: " << error.what() << std::endl;
     return 1;
