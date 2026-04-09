@@ -8,6 +8,7 @@ def menus():
         "Gobuster",
         "Nikto",
         "Sqlmap",
+        "TCP Relay",
         "Exit",
     ]
     colomn = 3

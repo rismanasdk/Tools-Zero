@@ -37,6 +37,10 @@ def run_sqlmap_main():
     script = BASE_DIR / "toolkit" / "sqlmap" / "main_sqlmap.sh"
     subprocess.run(["bash", str(script)], check=False)
 
+def run_tcp_relay_main():
+    script = BASE_DIR / "toolkit" / "tcp-relay" / "main_tcp_relay.sh"
+    subprocess.run(["bash", str(script)], check=False)
+
 def main():
     actions = {
         "1": run_nmap_main,
@@ -47,7 +51,8 @@ def main():
         "6": run_gobuster_main,
         "7": run_nikto_main,
         "8": run_sqlmap_main,
-        "9": lambda: None,
+        "9": run_tcp_relay_main,
+        "10": lambda: None,
         "q": lambda: None,
         "quit": lambda: None,
         "exit": lambda: None,
@@ -62,7 +67,7 @@ def main():
             print("\nExiting Tools Zero.")
             return
 
-        if select in {"9", "q", "quit", "exit"}:
+        if select in {"10", "q", "quit", "exit"}:
             print("Exiting Tools Zero.")
             return
 

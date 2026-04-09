@@ -55,6 +55,9 @@ secrets/
 # Local tool caches
 .cache/
 
+# Local compiled binaries
+toolkit/tcp-relay/bin/
+
 # Node modules (if any frontend tooling is added)
 node_modules/
 
