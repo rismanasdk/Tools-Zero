@@ -15,6 +15,7 @@ This project provides helper scripts to simplify running several popular tools:
 -Nikto
 -Sqlmap
 -TCP Relay (safe local C++ traffic relay for debugging)
+-C Utilities (safe admin/debugging helpers written in C)
 
 via a unified menu and small wrapper scripts. The goal is to centralize utilities, short documentation, and install scripts in a single repository for local use on Linux systems.
 
@@ -23,6 +24,7 @@ via a unified menu and small wrapper scripts. The goal is to centralize utilitie
 - Menu/CLI interface to select and run supported tools.
 - Wrappers for multiple tools located in `toolkit/` (examples: `aircrack-ng`, `nmap`).
 - A built-in C++ local TCP relay that compiles on demand for service debugging on loopback.
+- A set of C-based admin/debugging helpers for process inspection, DNS lookup, connectivity checks, and private-network ping sweeps.
 - Installation and uninstallation scripts at `scripts/install_tools.sh` and `scripts/uninstall_tools.sh`.
 
 ## Project structure (short)
@@ -39,6 +41,7 @@ via a unified menu and small wrapper scripts. The goal is to centralize utilitie
 - Python 3.x installed.
 - External tools you intend to use (e.g. `aircrack-ng`, `nmap`) — some can be installed via `scripts/install_tools.sh`.
 - `g++` if you want to use the built-in `TCP Relay` module.
+- `gcc` if you want to use the built-in `C Utilities` module.
 
 ## Installation
 
@@ -72,6 +75,8 @@ python3 cli.py
 After starting the program, use the menu to choose a tool to run, or execute individual helper scripts inside `toolkit/` directly (for example: `toolkit/nmap/main_nmap.py`). Check each tool's `help_commands.py` in its subfolder for specific usage instructions.
 
 `TCP Relay` is intentionally scoped to bind only on loopback addresses (`127.0.0.1`, `localhost`, or `::1`) so it can be used as a local debugging helper for systems and services you control, rather than as a general interception tool.
+
+`C Utilities` includes safe local/admin helpers such as an ICMP alive scanner limited to private IPv4 ranges, a Linux process monitor, a port knocking client for authorized environments, a TCP connect checker, and a DNS lookup tool.
 
 ## Preview
 

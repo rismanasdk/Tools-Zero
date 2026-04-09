@@ -41,6 +41,10 @@ def run_tcp_relay_main():
     script = BASE_DIR / "toolkit" / "tcp-relay" / "main_tcp_relay.sh"
     subprocess.run(["bash", str(script)], check=False)
 
+def run_c_utils_main():
+    script = BASE_DIR / "toolkit" / "c-utils" / "main_c_utils.sh"
+    subprocess.run(["bash", str(script)], check=False)
+
 def main():
     actions = {
         "1": run_nmap_main,
@@ -52,7 +56,8 @@ def main():
         "7": run_nikto_main,
         "8": run_sqlmap_main,
         "9": run_tcp_relay_main,
-        "10": lambda: None,
+        "10": run_c_utils_main,
+        "11": lambda: None,
         "q": lambda: None,
         "quit": lambda: None,
         "exit": lambda: None,
@@ -67,7 +72,7 @@ def main():
             print("\nExiting Tools Zero.")
             return
 
-        if select in {"10", "q", "quit", "exit"}:
+        if select in {"11", "q", "quit", "exit"}:
             print("Exiting Tools Zero.")
             return
 

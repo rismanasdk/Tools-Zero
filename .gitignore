@@ -57,6 +57,7 @@ secrets/
 
 # Local compiled binaries
 toolkit/tcp-relay/bin/
+toolkit/c-utils/bin/
 
 # Node modules (if any frontend tooling is added)
 node_modules/

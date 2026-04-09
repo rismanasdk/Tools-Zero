@@ -9,6 +9,7 @@ def menus():
         "Nikto",
         "Sqlmap",
         "TCP Relay",
+        "C Utilities",
         "Exit",
     ]
     colomn = 3
