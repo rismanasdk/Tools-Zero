@@ -55,6 +55,21 @@ tools_zero_require_command() {
   fi
 }
 
+tools_zero_show_paged_text() {
+  if ! [ -t 1 ]; then
+    cat
+    return
+  fi
+
+  if command -v less >/dev/null 2>&1; then
+    less -FRX
+  elif command -v more >/dev/null 2>&1; then
+    more
+  else
+    cat
+  fi
+}
+
 tools_zero_run_command() {
   local tool_name="$1"
   local binary="$2"

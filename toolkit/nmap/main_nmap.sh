@@ -315,39 +315,308 @@ EOF
   esac
 }
 
-combined_commands() {
-  cat <<'EOF'
-Combined Commands
-Nmap Query
-Nmap Command
+run_combined_command() {
+  case "$1" in
+    10|50)
+      echo
+      echo "Selected: $(combined_command_title "$1")"
+      echo "Required input: target or CIDR"
+      echo
+      ;;
+    17)
+      echo
+      echo "Selected: $(combined_command_title "$1")"
+      echo "Required inputs: decoy IP and target"
+      echo
+      ;;
+    *)
+      echo
+      echo "Selected: $(combined_command_title "$1")"
+      echo "Required input: target"
+      echo
+      ;;
+  esac
 
-1. Stealth scan with OS detection and verbose
-nmap -sS -O -v [target]
-2. UDP scan with OS detection
-nmap -sU -O [target]
-3. Comprehensive scan
-nmap -sS -sU -A -T4 [target]
-4. NSE vuln scan
-nmap --script=vuln [target]
-5. Service & Version Detection
-nmap -sV --version-intensity 5 [target]
-6.Scanning all range port
-nmap -p 1-65535 [target]
-7.Bypass Firewall
-nmap -f -T 0 [target]
-EOF
-
-  read -r -p $'\nSelect-Options>Nmap>Commands>' select
-  case "$select" in
-    1) read -r -p "Input target> " target; run_nmap nmap -sS -O -v "$target" ;;
-    2) read -r -p "Input target> " target; run_nmap nmap -sU -O "$target" ;;
-    3) read -r -p "Input target> " target; run_nmap nmap -sS -sU -A -T4 "$target" ;;
-    4) read -r -p "Input target> " target; run_nmap nmap --script=vuln "$target" ;;
-    5) read -r -p "Input target> " target; run_nmap nmap -sV --version-intensity 5 "$target" ;;
-    6) read -r -p "Input target> " target; run_nmap nmap -p 1-65535 "$target" ;;
-    7) read -r -p "Input target> " target; run_nmap nmap -f -T 0 "$target" ;;
+  case "$1" in
+    1)  read -r -p "Input target> " target; run_nmap nmap -sS -O -v "$target" ;;
+    2)  read -r -p "Input target> " target; run_nmap nmap -sU -O "$target" ;;
+    3)  read -r -p "Input target> " target; run_nmap nmap -A -T4 "$target" ;;
+    4)  read -r -p "Input target> " target; run_nmap nmap --script=vuln "$target" ;;
+    5)  read -r -p "Input target> " target; run_nmap nmap -p80,443 -sV --script http-enum,http-title,http-methods "$target" ;;
+    6)  read -r -p "Input target> " target; run_nmap nmap -p- -T4 "$target" ;;
+    7)  read -r -p "Input target> " target; run_nmap nmap -f -T0 "$target" ;;
+    8)  read -r -p "Input target> " target; run_nmap nmap -F -sV -O -T4 "$target" ;;
+    9)  read -r -p "Input target> " target; run_nmap nmap -sV --script vuln,auth,default "$target" ;;
+    10) read -r -p "Input target/CIDR> " target; run_nmap nmap -sn -PR "$target" ;;
+    11) read -r -p "Input target> " target; run_nmap nmap -p445 --script smb-os-discovery,smb-vuln-ms17-010 "$target" ;;
+    12) read -r -p "Input target> " target; run_nmap nmap -p3306,1433,1521 -sV --script mysql-info,ms-sql-info,oracle-tns-version "$target" ;;
+    13) read -r -p "Input target> " target; run_nmap nmap -p22 --script ssh-auth-methods,ssh2-enum-algos "$target" ;;
+    14) read -r -p "Input target> " target; run_nmap nmap -p25,110,143,465,587,993,995 -sV --script smtp-commands,smtp-enum-users "$target" ;;
+    15) read -r -p "Input target> " target; run_nmap nmap -p443 --script ssl-heartbleed "$target" ;;
+    16) read -r -p "Input target> " target; run_nmap nmap --source-port 53 "$target" ;;
+    17) read -r -p "Input decoy IP (ex: 1.1.1.1)> " decoy; read -r -p "Input target> " target; run_nmap nmap -D "$decoy",ME "$target" ;;
+    18) read -r -p "Input target> " target; run_nmap nmap --script auth,discovery,backdoor "$target" ;;
+    19) read -r -p "Input target> " target; run_nmap nmap -sS -sV -T2 "$target" ;;
+    20) read -r -p "Input target> " target; run_nmap nmap -sn --traceroute "$target" ;;
+    21) read -r -p "Input target> " target; run_nmap nmap -sS -T1 "$target" ;;
+    22) read -r -p "Input target> " target; run_nmap nmap -p 443,1604 -sV "$target" ;;
+    23) read -r -p "Input target> " target; run_nmap nmap -sU -p 5060 --script sip-enum-users "$target" ;;
+    24) read -r -p "Input target> " target; run_nmap nmap -p 1900,1883,5683 -sV "$target" ;;
+    25) read -r -p "Input target> " target; run_nmap nmap -p 2375,6443,10250 "$target" ;;
+    26) read -r -p "Input target> " target; run_nmap nmap -p 6379,11211 --script redis-info,memcached-info "$target" ;;
+    27) read -r -p "Input target> " target; run_nmap nmap -p 8080,8088,9000 -sV "$target" ;;
+    28) read -r -p "Input target> " target; run_nmap nmap --script http-oob-serialization "$target" ;;
+    29) read -r -p "Input target> " target; run_nmap nmap -p 502 --script modbus-discover "$target" ;;
+    30) read -r -p "Input target> " target; run_nmap nmap -p 3389,5900 --script rdp-enum-encryption,vnc-info "$target" ;;
+    31) read -r -p "Input target> " target; run_nmap nmap --script dns-zone-transfer -p 53 "$target" ;;
+    32) read -r -p "Input target> " target; run_nmap nmap -p 80,443 --script http-security-headers "$target" ;;
+    33) read -r -p "Input target> " target; run_nmap nmap -p 443 --script ssl-enum-ciphers "$target" ;;
+    34) read -r -p "Input target> " target; run_nmap nmap -p 445 --script smb-enum-shares,smb-enum-users "$target" ;;
+    35) read -r -p "Input target> " target; run_nmap nmap -p 23,513 --script telnet-encryption,rlogin-auth "$target" ;;
+    36) read -r -p "Input target> " target; run_nmap nmap --script tor-consensus-checker "$target" ;;
+    37) read -r -p "Input target> " target; run_nmap nmap -sV --script snmp-sysdescr "$target" ;;
+    38) read -r -p "Input target> " target; run_nmap nmap -sU -p 123 --script ntp-monlist "$target" ;;
+    39) read -r -p "Input target> " target; run_nmap nmap -sU -p 161 --script snmp-brute "$target" ;;
+    40) read -r -p "Input target> " target; run_nmap nmap -p 389 --script ldap-search "$target" ;;
+    41) read -r -p "Input target> " target; run_nmap nmap -p 80,443 --script http-waf-detect,http-waf-fingerprint "$target" ;;
+    42) read -r -p "Input target> " target; run_nmap nmap --script http-open-proxy,socks-open-proxy "$target" ;;
+    43) read -r -p "Input target> " target; run_nmap nmap --script ftp-anon,smb-enum-shares "$target" ;;
+    44) read -r -p "Input target> " target; run_nmap nmap -p 80,443 --script http-git "$target" ;;
+    45) read -r -p "Input target> " target; run_nmap nmap -p 443 --script ssl-cert "$target" ;;
+    46) read -r -p "Input target> " target; run_nmap nmap -sU -p 1900 --script upnp-info "$target" ;;
+    47) read -r -p "Input target> " target; run_nmap nmap -p 113 --script auth-owners "$target" ;;
+    48) read -r -p "Input target> " target; run_nmap nmap --script stuxnet-detect -p 445 "$target" ;;
+    49) read -r -p "Input target> " target; run_nmap nmap -sV --version-intensity 9 "$target" ;;
+    50) read -r -p "Input target/CIDR> " target; run_nmap nmap -sn -v "$target" ;;
     *) echo "Command options are not yet available." ;;
   esac
+}
+
+combined_command_title() {
+  case "$1" in
+    1) printf '%s' "Stealth Scan + OS Detection + Verbose" ;;
+    2) printf '%s' "UDP Scan + OS Detection" ;;
+    3) printf '%s' "Comprehensive Aggressive Scan" ;;
+    4) printf '%s' "Standard Vulnerability Scan" ;;
+    5) printf '%s' "Web Server Full Recon" ;;
+    6) printf '%s' "Full Port Scan" ;;
+    7) printf '%s' "Firewall Bypass (Fragmented + T0)" ;;
+    8) printf '%s' "Quick Scan (Top 100 Ports)" ;;
+    9) printf '%s' "Deep Vulnerability & Auth Audit" ;;
+    10) printf '%s' "Network Discovery (Ping Sweep / CIDR)" ;;
+    11) printf '%s' "SMB/Windows Recon (MS17-010)" ;;
+    12) printf '%s' "Database Recon (SQL)" ;;
+    13) printf '%s' "SSH Security Audit" ;;
+    14) printf '%s' "Mail Server Recon" ;;
+    15) printf '%s' "Heartbleed Bug Check" ;;
+    16) printf '%s' "Firewall Evasion: Source Port 53" ;;
+    17) printf '%s' "Firewall Evasion: Decoy Scan" ;;
+    18) printf '%s' "Find Common Backdoors" ;;
+    19) printf '%s' "Slow Comprehensive Scan (T2)" ;;
+    20) printf '%s' "Generate Host Report with Traceroute" ;;
+    21) printf '%s' "Slow & Stealthy Scan (T1)" ;;
+    22) printf '%s' "Scan for Citrix/VPN Gateways" ;;
+    23) printf '%s' "VoIP/SIP Enumeration" ;;
+    24) printf '%s' "IoT Device Scan (MQTT, CoAP)" ;;
+    25) printf '%s' "Docker/Kubernetes API Discovery" ;;
+    26) printf '%s' "Redis/Memcached Unauth Check" ;;
+    27) printf '%s' "Jenkins/TeamCity/CI-CD Server Recon" ;;
+    28) printf '%s' "Scan for Out-of-Band (OOB) vulnerabilities" ;;
+    29) printf '%s' "Industrial Systems (Modbus) Scan" ;;
+    30) printf '%s' "VNC/RDP Screenshot & Auth Check" ;;
+    31) printf '%s' "DNS Zone Transfer Attempt (AXFR)" ;;
+    32) printf '%s' "HTTP Security Headers Audit" ;;
+    33) printf '%s' "SSL/TLS Cipher Suite Enumeration" ;;
+    34) printf '%s' "SMB Share Enumeration" ;;
+    35) printf '%s' "Telnet/Rlogin Security Check" ;;
+    36) printf '%s' "Scan for Tor Exit Nodes/Proxies" ;;
+    37) printf '%s' "Detect Virtualization/Hypervisor" ;;
+    38) printf '%s' "NTP Monlist Amplification Check" ;;
+    39) printf '%s' "SNMP Community String Brute Force" ;;
+    40) printf '%s' "LDAP/Active Directory Null Bind Check" ;;
+    41) printf '%s' "Detect WAF Presence" ;;
+    42) printf '%s' "Scan for Open Proxies (SOCKS, HTTP)" ;;
+    43) printf '%s' "Check for Anonymous Write Access" ;;
+    44) printf '%s' "Find Git/SVN/Hidden Repositories" ;;
+    45) printf '%s' "SSL Certificate Expiry & Info Check" ;;
+    46) printf '%s' "Scan for UPnP Devices (SSDP)" ;;
+    47) printf '%s' "Identd (Port 113) User Enumeration" ;;
+    48) printf '%s' "Check for Known SCADA Vulnerabilities" ;;
+    49) printf '%s' "Aggressive Banner Grabbing" ;;
+    50) printf '%s' "Discovery: List IPs, MACs & Vendors" ;;
+    *) printf '%s' "Combined Command" ;;
+  esac
+}
+
+show_combined_category_menu() {
+  case "$1" in
+    1)
+      cat <<'EOF'
+Web & Cloud Security
+
+1. Web Server Full Recon
+2. Heartbleed Bug Check
+3. Jenkins/TeamCity/CI-CD Server Recon
+4. Scan for Out-of-Band (OOB) vulnerabilities
+5. HTTP Security Headers Audit
+6. SSL/TLS Cipher Suite Enumeration
+7. Detect WAF Presence
+8. Find Git/SVN/Hidden Repositories
+9. SSL Certificate Expiry & Info Check
+10. Scan for Open Proxies (SOCKS, HTTP)
+b. Back
+EOF
+      ;;
+    2)
+      cat <<'EOF'
+Network & Infrastructure
+
+1. Stealth Scan + OS Detection + Verbose
+2. UDP Scan + OS Detection
+3. Quick Scan (Top 100 Ports)
+4. Network Discovery (Ping Sweep / CIDR)
+5. SSH Security Audit
+6. Mail Server Recon (SMTP, POP3, IMAP)
+7. Generate Host Report with Traceroute
+8. Scan for Citrix/VPN Gateways
+9. VoIP/SIP Enumeration
+10. DNS Zone Transfer Attempt (AXFR)
+11. Telnet/Rlogin Security Check
+12. Discovery: List IPs, MACs & Vendors
+b. Back
+EOF
+      ;;
+    3)
+      cat <<'EOF'
+Enterprise & Database
+
+1. Comprehensive Aggressive Scan
+2. Deep Vulnerability & Auth Audit
+3. SMB/Windows Recon (MS17-010)
+4. Database Recon (SQL)
+5. Docker/Kubernetes API Discovery
+6. Redis/Memcached Unauth Check
+7. VNC/RDP Screenshot & Auth Check
+8. SMB Share Enumeration
+9. SNMP Community String Brute Force
+10. LDAP/Active Directory Null Bind Check
+11. Check for Anonymous Write Access
+b. Back
+EOF
+      ;;
+    4)
+      cat <<'EOF'
+IoT, ICS & SCADA
+
+1. IoT Device Scan (MQTT, CoAP)
+2. Industrial Systems (Modbus) Scan
+3. NTP Monlist Amplification Check
+4. Scan for UPnP Devices (SSDP)
+5. Check for Known SCADA Vulnerabilities
+6. Identd (Port 113) User Enumeration
+b. Back
+EOF
+      ;;
+    5)
+      cat <<'EOF'
+Stealth & Advanced Evasion
+
+1. Standard Vulnerability Scan (NSE vuln)
+2. Full Port Scan (p- -T4)
+3. Firewall Bypass (Fragmented + T0)
+4. Firewall Evasion: Source Port 53
+5. Firewall Evasion: Decoy Scan
+6. Find Common Backdoors
+7. Slow Comprehensive Scan (T2)
+8. Slow & Stealthy Scan (T1)
+9. Scan for Tor Exit Nodes/Proxies
+10. Detect Virtualization/Hypervisor
+11. Aggressive Banner Grabbing
+b. Back
+EOF
+      ;;
+  esac
+}
+
+combined_commands() {
+  while true; do
+    cat <<'EOF'
+Combined Commands
+
+1. Web & Cloud Security (10 Menu)
+2. Network & Infrastructure (12 Menu)
+3. Enterprise & Database (11 Menu)
+4. IoT, ICS & SCADA (6 Menu)
+5. Stealth & Advanced Evasion (11 Menu)
+b. Back
+EOF
+
+    read -r -p $'\nSelect-Options>Nmap>Combined>' category
+    case "$category" in
+      1|2|3|4|5)
+        while true; do
+          show_combined_category_menu "$category"
+          read -r -p $'\nSelect-Options>Nmap>Commands>' select
+          case "${category}:${select}" in
+            1:1) run_combined_command 5 ;;
+            1:2) run_combined_command 15 ;;
+            1:3) run_combined_command 27 ;;
+            1:4) run_combined_command 28 ;;
+            1:5) run_combined_command 32 ;;
+            1:6) run_combined_command 33 ;;
+            1:7) run_combined_command 41 ;;
+            1:8) run_combined_command 44 ;;
+            1:9) run_combined_command 45 ;;
+            1:10) run_combined_command 42 ;;
+            2:1) run_combined_command 1 ;;
+            2:2) run_combined_command 2 ;;
+            2:3) run_combined_command 8 ;;
+            2:4) run_combined_command 10 ;;
+            2:5) run_combined_command 13 ;;
+            2:6) run_combined_command 14 ;;
+            2:7) run_combined_command 20 ;;
+            2:8) run_combined_command 22 ;;
+            2:9) run_combined_command 23 ;;
+            2:10) run_combined_command 31 ;;
+            2:11) run_combined_command 35 ;;
+            2:12) run_combined_command 50 ;;
+            3:1) run_combined_command 3 ;;
+            3:2) run_combined_command 9 ;;
+            3:3) run_combined_command 11 ;;
+            3:4) run_combined_command 12 ;;
+            3:5) run_combined_command 25 ;;
+            3:6) run_combined_command 26 ;;
+            3:7) run_combined_command 30 ;;
+            3:8) run_combined_command 34 ;;
+            3:9) run_combined_command 39 ;;
+            3:10) run_combined_command 40 ;;
+            3:11) run_combined_command 43 ;;
+            4:1) run_combined_command 24 ;;
+            4:2) run_combined_command 29 ;;
+            4:3) run_combined_command 38 ;;
+            4:4) run_combined_command 46 ;;
+            4:5) run_combined_command 48 ;;
+            4:6) run_combined_command 47 ;;
+            5:1) run_combined_command 4 ;;
+            5:2) run_combined_command 6 ;;
+            5:3) run_combined_command 7 ;;
+            5:4) run_combined_command 16 ;;
+            5:5) run_combined_command 17 ;;
+            5:6) run_combined_command 18 ;;
+            5:7) run_combined_command 19 ;;
+            5:8) run_combined_command 21 ;;
+            5:9) run_combined_command 36 ;;
+            5:10) run_combined_command 37 ;;
+            5:11) run_combined_command 49 ;;
+            *:b|*:B) break ;;
+            *) echo "Command options are not yet available." ;;
+          esac
+        done
+        ;;
+      b|B) return ;;
+      *) echo "Command options are not yet available." ;;
+    esac
+  done
 }
 
 timing_settings() {
