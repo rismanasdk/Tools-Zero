@@ -35,6 +35,14 @@ nmap [targets] --excludefile [list.txt]
 nmap -A [target]
 10. Scan an IPv6 target
 nmap -6 [target]
+11. Scan Port 80,443
+nmap -p 80,443 [target]
+12. Scan top 100 ports
+nmap --top-ports 100 [target]
+13. Scan all ports
+nmap -p 1-65535 [target]
+14 Scan custom ports
+nmap -p [ports] [target]
 EOF
 
   read -r -p $'\nSelect-Options>Nmap>Commands>' select
@@ -81,8 +89,25 @@ EOF
       read -r -p "Input IPv6 target> " target
       run_nmap nmap -6 "$target"
       ;;
+    11)
+      read -r -p "Input target> " target
+      run_nmap nmap -p 80,443 "$target"
+      ;;
+    12)
+      read -r -p "Input target> " target
+      run_nmap nmap --top-ports 100 "$target"
+      ;;
+    13)
+      read -r -p "Input target> " target
+      run_nmap nmap -p 1-65535 "$target"
+      ;;
+    14)
+      read -r -p "Input ports> " ports
+      read -r -p "Input target> " target
+      run_nmap nmap -p "$ports" "$target"
+      ;;
     *)
-      echo "Pilihan command belum tersedia."
+      echo "Command options are not yet available."
       ;;
   esac
 }
@@ -152,7 +177,7 @@ EOF
       run_nmap nmap --dns-servers "$servers" "$target"
       ;;
     17) read -r -p "Input targets> " targets; run_nmap nmap -sL "$targets" ;;
-    *) echo "Pilihan command belum tersedia." ;;
+    *) echo "Command options are not yet available." ;;
   esac
 }
 
@@ -193,7 +218,7 @@ EOF
     7) read -r -p "Input target> " target; run_nmap nmap --randomize-hosts "$target" ;;
     8) read -r -p "Input MAC/vendor> " mac; read -r -p "Input target> " target; run_nmap nmap --spoof-mac "$mac" "$target" ;;
     9) read -r -p "Input target> " target; run_nmap nmap --badsum "$target" ;;
-    *) echo "Pilihan command belum tersedia." ;;
+    *) echo "Command options are not yet available." ;;
   esac
 }
 
@@ -222,7 +247,7 @@ EOF
     3) read -r -p "Input target> " target; run_nmap nmap -sV "$target" ;;
     4) read -r -p "Input target> " target; run_nmap nmap -sV --version-trace "$target" ;;
     5) read -r -p "Input target> " target; run_nmap nmap -sR "$target" ;;
-    *) echo "Pilihan command belum tersedia." ;;
+    *) echo "Command options are not yet available." ;;
   esac
 }
 
@@ -254,7 +279,7 @@ EOF
     4) read -r -p "Input path/filename> " path; read -r -p "Input target> " target; run_nmap nmap -oA "$path" "$target" ;;
     5) read -r -p "Input time> " time; read -r -p "Input target> " target; run_nmap nmap --stats-every "$time" "$target" ;;
     6) read -r -p "Input output file> " out; read -r -p "Input target> " target; run_nmap nmap -oS "$out" "$target" ;;
-    *) echo "Pilihan command belum tersedia." ;;
+    *) echo "Command options are not yet available." ;;
   esac
 }
 
@@ -286,7 +311,7 @@ EOF
     4) read -r -p "Input categories> " cats; run_nmap nmap --script "$cats" ;;
     5) read -r -p "Input script> " script; read -r -p "Input target> " target; run_nmap nmap --script "$script" --script-trace "$target" ;;
     6) run_nmap nmap --script-updatedb ;;
-    *) echo "Pilihan command belum tersedia." ;;
+    *) echo "Command options are not yet available." ;;
   esac
 }
 
@@ -309,7 +334,7 @@ nmap -sV --version-intensity 5 [target]
 6.Scanning all range port
 nmap -p 1-65535 [target]
 7.Bypass Firewall
-nmap -f -t 0 [target]
+nmap -f -T 0 [target]
 EOF
 
   read -r -p $'\nSelect-Options>Nmap>Commands>' select
@@ -320,12 +345,44 @@ EOF
     4) read -r -p "Input target> " target; run_nmap nmap --script=vuln "$target" ;;
     5) read -r -p "Input target> " target; run_nmap nmap -sV --version-intensity 5 "$target" ;;
     6) read -r -p "Input target> " target; run_nmap nmap -p 1-65535 "$target" ;;
-    7) read -r -p "Input target> " target; run_nmap nmap -f -t 0 "$target" ;;
-    *) echo "Pilihan command belum tersedia." ;;
+    7) read -r -p "Input target> " target; run_nmap nmap -f -T 0 "$target" ;;
+    *) echo "Command options are not yet available." ;;
+  esac
+}
+
+timing_settings() {
+  cat <<'EOF'
+Timing and Performance
+Nmap Query
+Nmap Command
+
+Time and Performance
+1. Paranoid (-T0) - Very slow 
+2. Sneaky (-T1) - Slow
+3. Polite (-T2) - Bandwidth efficient
+4. Normal (-T3) - Default
+5. Aggressive (-T4) - Fast & Reliable 
+6. Crazy (-T5) - Very fast 
+EOF
+
+  read -r -p $'\nSelect-Options>Nmap>Commands>' select
+  case "$select" in
+    1) read -r -p "Input target> " target; run_nmap nmap -T0 "$target" ;;
+    2) read -r -p "Input target> " target; run_nmap nmap -T1 "$target" ;;
+    3) read -r -p "Input target> " target; run_nmap nmap -T2 "$target" ;;
+    4) read -r -p "Input target> " target; run_nmap nmap -T3 "$target" ;;
+    5) read -r -p "Input target> " target; run_nmap nmap -T4 "$target" ;;
+    6) read -r -p "Input target> " target; run_nmap nmap -T5 "$target" ;;
+    *) echo "Command options are not yet available." ;;
   esac
 }
 
 main() {
+  if [[ $EUID -ne 0 ]]; then
+    echo "Error: This tool requires sudo privileges."
+    exit 1
+  fi
+
   while true; do
     show_menu
     echo "b. Back to main menu"
@@ -339,6 +396,7 @@ main() {
       5) output_options ;;
       6) scripting_engine ;;
       7) combined_commands ;;
+      8) timing_settings ;;
       b|B) return 0 ;;
       q|Q) exit 0 ;;
       *) echo "Category selection is not yet available." ;;

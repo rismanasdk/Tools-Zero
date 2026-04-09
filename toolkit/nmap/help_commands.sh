@@ -8,4 +8,5 @@ cat <<'EOF'
 5. Output Options
 6. Scripting Engine
 7. Combined Commands
+8. Timing Settings
 EOF
