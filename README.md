@@ -78,6 +78,7 @@ Below is a screenshot of the current interface:
 
 - Open an issue to report bugs or propose improvements.
 - Fork the repository, create a feature branch (`feature/xxx`), and submit a pull request.
+- See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow and review checklist.
 
 ## Status Project
 
