@@ -1,6 +1,14 @@
 import os
+import sys
+from pathlib import Path
 import shutil
 import subprocess
+
+for parent in Path(__file__).resolve().parents:
+    if (parent / "runtime_utils.py").exists():
+        sys.path.insert(0, str(parent))
+        break
+
 from runtime_utils import execute_logged_command
 
 

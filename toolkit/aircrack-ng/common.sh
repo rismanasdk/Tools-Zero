@@ -12,7 +12,10 @@ require_python3() {
 run_aircrack_python() {
   local script_path="$1"
   shift || true
+  local project_root
+
+  project_root="$(cd "${BASE_DIR}/../.." && pwd)"
 
   require_python3 || return 1
-  python3 "${script_path}" "$@"
+  PYTHONPATH="${project_root}${PYTHONPATH:+:${PYTHONPATH}}" python3 "${script_path}" "$@"
 }
