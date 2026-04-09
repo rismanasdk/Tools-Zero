@@ -49,6 +49,12 @@ bash scripts/install_tools.sh
 3. Run the application:
 
 ```bash
+toolszero
+```
+
+Or run it directly with Python:
+
+```bash
 python3 main.py
 ```
 
