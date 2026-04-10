@@ -1,0 +1,52 @@
+{
+  "logging": {
+    "enabled": true,
+    "level": "INFO",
+    "path": "./logs",
+    "max_size_mb": 10,
+    "backup_count": 5
+  },
+  "proxy": {
+    "enabled": false,
+    "http": null,
+    "https": null,
+    "no_proxy": "127.0.0.1,localhost"
+  },
+  "wordlists": {
+    "path": "./wordlists",
+    "auto_download": false,
+    "sources": [
+      "https://raw.githubusercontent.com/danielmiessler/SecLists/master/"
+    ]
+  },
+  "timeout": {
+    "default": 30,
+    "long_running": 300,
+    "connection": 10
+  },
+  "credentials": {
+    "encrypted": true,
+    "cache_enabled": false,
+    "cache_duration": 3600
+  },
+  "tools": {
+    "nmap": {
+      "default_args": "-sV -sC --script vuln",
+      "output_format": "xml"
+    },
+    "hydra": {
+      "threads": 16,
+      "timeout": 30,
+      "max_retries": 3
+    },
+    "johntheripper": {
+      "wordlist_path": "./wordlists/rockyou.txt",
+      "gpu_enabled": false,
+      "rules": "Jumbo"
+    },
+    "gobuster": {
+      "threads": 50,
+      "timeout": 5
+    }
+  }
+}
