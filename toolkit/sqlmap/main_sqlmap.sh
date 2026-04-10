@@ -8,9 +8,17 @@ set -euo pipefail
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${BASE_DIR}/common.sh"
 
-# Main category menu
+# Main category menu - inlined to avoid subprocess
 show_category_menu() {
-  bash "${BASE_DIR}/help_commands.sh"
+  cat << 'EOF'
+1. Target
+2. Request
+3. Enumeration
+4. File System Access
+5. Operating System Access
+6. General
+7. Misc
+EOF
 }
 
 # Target category handler

@@ -9,7 +9,16 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${BASE_DIR}/common.sh"
 
 show_menu() {
-  bash "${BASE_DIR}/help_commands.sh"
+  cat << 'EOF'
+1. Dir
+2. DNS
+3. VHost
+4. Fuzz
+5. GCS
+6. S3
+7. TFTP
+8. Version
+EOF
 }
 
 handle_mode() {

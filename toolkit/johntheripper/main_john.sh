@@ -9,7 +9,17 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${BASE_DIR}/common.sh"
 
 show_menu() {
-  bash "${BASE_DIR}/help_commands.sh"
+  cat << 'EOF'
+1. Wordlist
+2. Single
+3. Incremental
+4. Restore Session
+5. Show
+6. Status
+7. Test
+8. Wordlist Rules
+9. Advanced
+EOF
 }
 
 handle_wordlist() {

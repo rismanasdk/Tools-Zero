@@ -19,7 +19,7 @@ build_c_tool() {
   tools_zero_run_command \
     "C Utils Build" \
     "gcc" \
-    gcc -std=c11 -O2 -Wall -Wextra -pedantic \
+    gcc -std=c11 -O3 -Wall -Wextra -pedantic -ffunction-sections -fdata-sections -Wl,--gc-sections \
     "${source_file}" \
     -o "${output_file}" \
     "$@"

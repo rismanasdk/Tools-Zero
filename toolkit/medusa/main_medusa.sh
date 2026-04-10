@@ -9,7 +9,22 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${BASE_DIR}/common.sh"
 
 show_menu() {
-  bash "${BASE_DIR}/help_commands.sh"
+  cat << 'EOF'
+1. SSH
+2. FTP
+3. HTTP-Form
+4. SMB
+5. MySQL
+6. Telnet
+7. VNC
+8. SMTP
+9. POP3
+10. IMAP
+11. MSSQL
+12. PostgreSQL
+13. SNMP
+14. SVN
+EOF
 }
 
 handle_protocol() {
