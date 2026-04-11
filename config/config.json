@@ -1,0 +1,5 @@
+{
+  "logging": {"level": "INFO", "path": "./logs"},
+  "timeout": {"default": 30, "long_running": 300},
+  "proxy": {"enabled": false}
+}

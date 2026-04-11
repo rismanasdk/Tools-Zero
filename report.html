@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aircrack-ng Report</title>
+    <style>
+        body { font-family: Arial; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #667eea; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #667eea; color: white; padding: 10px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #ddd; }
+        tr:hover { background: #f9f9f9; }
+        .stat { display: inline-block; background: #f0f0f0; padding: 15px; margin: 10px; border-radius: 4px; border-left: 4px solid #667eea; }
+        .stat .number { font-size: 1.8em; font-weight: bold; color: #667eea; }
+        .stat .label { font-size: 0.9em; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Aircrack-ng Penetration Test Report</h1>
+        <p>Generated: $(date)</p>
+        
+        <h2>Executive Summary</h2>
+        <div class="stat">
+            <div class="number">1</div>
+            <div class="label">Network Tested</div>
+        </div>
+        
+        <h2>Network Details</h2>
+        <table>
+            <tr><th>SSID</th><th>BSSID</th><th>Channel</th><th>Encryption</th></tr>
+            <tr><td>Test Network</td><td>AA:BB:CC:DD:EE:FF</td><td>6</td><td>WPA2</td></tr>
+        </table>
+        
+        <h2>Recommendations</h2>
+        <ul>
+            <li>Use WPA3 encryption</li>
+            <li>Disable WPS</li>
+            <li>Use strong passwords</li>
+        </ul>
+    </div>
+</body>
+</html>

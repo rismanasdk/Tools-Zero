@@ -1,0 +1,13 @@
+{
+  "name": "test_session",
+  "timestamp": "2026-04-10T10:29:34Z",
+  "network": {
+    "ssid": "Demo Network",
+    "bssid": "AA:BB:CC:DD:EE:FF",
+    "channel": 6,
+    "encryption": "WPA2"
+  },
+  "status": "initialized",
+  "packets": 0,
+  "handshake": false
+}

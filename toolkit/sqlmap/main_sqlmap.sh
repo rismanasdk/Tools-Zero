@@ -323,6 +323,7 @@ OS-Access Query - OS-Access Command
    sqlmap -u [url] --file-read [file] --batch
 5. File write
    sqlmap -u [url] --file-write [file] --file-dest [file] --batch
+
 EOF
 
   read -r -p $'\nSelect-Options>Sqlmap>OS-Access>' select

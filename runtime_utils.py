@@ -9,6 +9,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent
 LOG_DIR = PROJECT_ROOT / "logs"
 HISTORY_FILE = LOG_DIR / "command_history.log"
+BIN_DIR = PROJECT_ROOT / "core" / "engines" / "bin"
 
 
 def load_module(module_path, module_name):
@@ -48,6 +49,14 @@ def _record_history(tool_name, status, command_text):
         )
 
 
+def get_binary_path(binary_name):
+    """Resolve binary path: first check core/engines/bin/, then system PATH"""
+    local_binary = BIN_DIR / binary_name
+    if local_binary.exists():
+        return str(local_binary)
+    return shutil.which(binary_name)
+
+
 def execute_logged_command(
     command,
     tool_name,
@@ -55,7 +64,7 @@ def execute_logged_command(
     warn_if_not_root=False,
     missing_tool_message=None,
 ):
-    binary_path = shutil.which(command[0])
+    binary_path = get_binary_path(command[0])
     if not binary_path:
         print(f"\nCommand '{command[0]}' not found in the system.")
         if missing_tool_message:

@@ -3,7 +3,11 @@
 set -euo pipefail
 
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "${BASE_DIR}/../.." && pwd)"
 source "${BASE_DIR}/common.sh"
+
+# Use centralized binary from core/engines/bin/
+TCP_RELAY_BIN="${PROJECT_ROOT}/core/engines/bin/local_tcp_relay"
 
 show_menu() {
   bash "${BASE_DIR}/help_commands.sh"
@@ -18,7 +22,7 @@ main() {
 
     case "${select}" in
       1)
-        build_tcp_relay
+        run_tcp_relay --help
         ;;
       2)
         read -r -p "Input listen host [127.0.0.1]> " listen_host
