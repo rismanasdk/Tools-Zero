@@ -648,7 +648,7 @@ EOF
 
 main() {
   if [[ $EUID -ne 0 ]]; then
-    echo "Error: This tool requires sudo privileges."
+    echo -e "\033[1;31mError: This tool requires sudo privileges.\033[0m"
     exit 1
   fi
 

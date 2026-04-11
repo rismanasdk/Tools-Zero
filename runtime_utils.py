@@ -91,7 +91,7 @@ def execute_logged_command(
 
         geteuid = getattr(os, "geteuid", None)
         if callable(geteuid) and geteuid() != 0:
-            print(f"{header} usually needs to be run as root or via sudo.")
+            print(f"\033[1;31m{header} usually needs to be run as root or via sudo.\033[0m")
             print()
 
     with log_file.open("w", encoding="utf-8") as output:
