@@ -82,7 +82,7 @@ After starting the program, use the menu to choose a tool to run, or execute ind
 
 Below is a screenshot of the current interface:
 
-![Tools Zero Preview](screenshot/ss.png)
+![Tools Zero Preview](screenshot/ss1.png)
 
 ## Contributing
 
