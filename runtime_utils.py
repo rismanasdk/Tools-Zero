@@ -5,12 +5,10 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
-
 PROJECT_ROOT = Path(__file__).resolve().parent
 LOG_DIR = PROJECT_ROOT / "logs"
 HISTORY_FILE = LOG_DIR / "command_history.log"
 BIN_DIR = PROJECT_ROOT / "core" / "engines" / "bin"
-
 
 def load_module(module_path, module_name):
     spec = importlib.util.spec_from_file_location(module_name, module_path)
@@ -19,7 +17,6 @@ def load_module(module_path, module_name):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
-
 
 def _slugify(name):
     parts = []
@@ -40,7 +37,6 @@ def _ensure_log_dir(tool_name):
     tool_log_dir.mkdir(parents=True, exist_ok=True)
     return tool_log_dir
 
-
 def _record_history(tool_name, status, command_text):
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     with HISTORY_FILE.open("a", encoding="utf-8") as history:
@@ -48,14 +44,12 @@ def _record_history(tool_name, status, command_text):
             f"{datetime.now():%Y-%m-%d %H:%M:%S} | {tool_name} | exit={status} | {command_text}\n"
         )
 
-
 def get_binary_path(binary_name):
     """Resolve binary path: first check core/engines/bin/, then system PATH"""
     local_binary = BIN_DIR / binary_name
     if local_binary.exists():
         return str(local_binary)
     return shutil.which(binary_name)
-
 
 def execute_logged_command(
     command,
