@@ -263,7 +263,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed workflow.
 ## License
 
 See [LICENSE](LICENSE) for license details.
-
 ## Disclaimer
 
 This toolkit is provided for authorized security testing and system administration only. Users are responsible for ensuring they have explicit permission before running any security tools. Unauthorized access to computer systems is illegal.
