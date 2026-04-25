@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+n#!/usr/bin/env bash
 
 set -euo pipefail
 
@@ -12,7 +12,6 @@ PROC_MONITOR_BIN="${PROJECT_ROOT}/core/engines/bin/linux_process_monitor"
 PORT_KNOCK_BIN="${PROJECT_ROOT}/core/engines/bin/port_knocking_client"
 TCP_CHECK_BIN="${PROJECT_ROOT}/core/engines/bin/tcp_connect_checker"
 DNS_LOOKUP_BIN="${PROJECT_ROOT}/core/engines/bin/dns_lookup_tool"
-
 
 show_menu() {
   bash "${BASE_DIR}/help_commands.sh"
